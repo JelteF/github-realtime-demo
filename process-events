@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/sh
 if [ -f extract.log ] ; then
   cat extract.log
 fi

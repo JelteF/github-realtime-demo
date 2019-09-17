@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/sh
 op_id=$(psql -qtAX -c "INSERT INTO extract (start_time) VALUES (now()) RETURNING op_id") > /dev/null
 num_processed=$(psql -tAX -c "SELECT end_id-start_id AS num_process FROM extract_commits()")
 
