@@ -1,7 +1,12 @@
-#!/bin/sh
+#!/bin/bash
+set -euxo pipefail
+
+f=$1-$2.json.gz
+
 psql -X <<EOF
 CREATE TEMP TABLE raw (data jsonb);
-\COPY raw FROM PROGRAM 'curl -s https://data.gharchive.org/$1-$2.json.gz | gzip -d | grep -v "\\u0000"' WITH (format 'csv', quote e'\x01', delimiter e'\x02', escape e'\x01')
-\COPY (SELECT (data->'repo'->>'id')::bigint, data FROM raw WHERE data->'repo'->>'id' IS NOT NULL) TO PROGRAM 'gzip > /Users/craig/Projects/github-realtime-demo/data/github/$1-$2.json.gz'
+\COPY raw FROM PROGRAM 'curl -s https://data.gharchive.org/$f | gzip -d | grep -v "\\u0000"' WITH (format 'csv', quote e'\x01', delimiter e'\x02', escape e'\x01')
+\COPY (SELECT (data->'repo'->>'id')::bigint, data FROM raw WHERE data->'repo'->>'id' IS NOT NULL) TO PROGRAM 'gzip > ./data/github/$f.tmp'
 EOF
+mv "./data/github/$f.tmp" "./data/github/$f"
 

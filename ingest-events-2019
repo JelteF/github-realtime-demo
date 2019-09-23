@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 if [ -f ingest.log ] ; then
   cat ingest.log
 fi
 
-find /Users/craig/Projects/github-realtime-demodata/github -type f | grep 2019 | sort | time xargs -n 4 -P 8 ./load-events.sh | tee -a ingest.log
+find ./data/github -type f -name '*.gz' | grep 2019 | sort | time xargs -n 4 -P 8 ./load-events.sh | tee -a ingest.log

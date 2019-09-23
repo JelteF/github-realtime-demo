@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS rollups;
 CREATE TABLE rollups (
     name text primary key,
     event_table_name text not null,
